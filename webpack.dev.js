@@ -1,12 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const merge = require("webpack-merge");
+const baseConfig = require("./webpack.base");
 
-module.exports = {
+const devConfig = {
   mode: "development",
   devtool: "cheap-module-eval-source-map",
-  entry: {
-    main: "./src/index.js",
-  },
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
@@ -21,11 +20,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-      },
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader", "postcss-loader"],
@@ -47,5 +41,6 @@ module.exports = {
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })], // index打包模板
 };
+
+module.exports = merge(baseConfig, devConfig);

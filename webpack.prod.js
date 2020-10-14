@@ -5,13 +5,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const webpack = require("webpack");
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
+const merge = require("webpack-merge");
+const baseConfig = require("./webpack.base");
 
-module.exports = {
+const prodConfig = {
   mode: "production",
   devtool: "cheap-module-source-map",
-  entry: {
-    main: "./src/index.js",
-  },
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].[contenthash:8].js",
@@ -19,11 +18,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-      },
       {
         test: /\.css$/,
         use: [
@@ -50,7 +44,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: "./src/index.html" }),
     new AddAssetHtmlPlugin({
       filepath: path.resolve(__dirname, "./dll/*.dll.js"), // 把dll.js加进index.html里，并且拷贝文件到dist目录
     }),
@@ -64,9 +57,6 @@ module.exports = {
     new CleanWebpackPlugin(), // 生成前先清除dist目录
     new ManifestPlugin(), // 但是在某些情况，index.html模板由后端渲染，那么我们就需要一份打包清单，知道打包后的文件对应的真正路径
   ],
-  optimization: {
-    splitChunks: {
-      chunks: "all", // webpack4自带代码分割功能
-    },
-  },
 };
+
+module.exports = merge(baseConfig, prodConfig);
