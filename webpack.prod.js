@@ -75,7 +75,7 @@ const prodConfig = {
           },
           compress: {
             drop_console: true,
-            collapse_vars: true,
+            collapse_vars: true, // 是否内联虽然已经定义了，但是只用到一次的变量，比如将var x = 1; y = x;转换成y = 1
             reduce_vars: true,
           },
         },
