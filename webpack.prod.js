@@ -7,6 +7,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
+const BundleAnalyzerWebpackPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 const prodConfig = {
   mode: "production",
@@ -58,5 +60,10 @@ const prodConfig = {
     new ManifestPlugin(), // 在某些情况，index.html模板由后端渲染，那么我们就需要一份打包清单，知道打包后的文件对应的真正路径
   ],
 };
+
+// 判断环境变量，是否开启分析报告
+if (process.env.npm_config_report) {
+  prodConfig.plugins.push(new BundleAnalyzerWebpackPlugin());
+}
 
 module.exports = merge(baseConfig, prodConfig);
