@@ -20,7 +20,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: "happypack/loader?id=happyBabel",
+        use: ["cache-loader", "happypack/loader?id=happyBabel"],
         exclude: /node_modules/,
       },
     ],
