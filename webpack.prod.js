@@ -3,10 +3,10 @@ const webpack = require("webpack");
 const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base");
 
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
+const ParallelUglifyPlugin = require("webpack-parallel-uglify-plugin");
 const BundleAnalyzerWebpackPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
@@ -56,9 +56,29 @@ const prodConfig = {
     new webpack.DllReferencePlugin({
       manifest: path.resolve(__dirname, "./dll/vendors.manifest.json"), // 读取dll打包后的manifest.json，分析需要跳过哪些库代码
     }),
-    new CleanWebpackPlugin(), // 生成前先清除dist目录
     new ManifestPlugin(), // 在某些情况，index.html模板由后端渲染，那么我们就需要一份打包清单，知道打包后的文件对应的真正路径
   ],
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+    minimizer: [
+      new ParallelUglifyPlugin({
+        cacheDir: ".cache/",
+        uglifyJS: {
+          output: {
+            comments: false,
+            beautify: false,
+          },
+          compress: {
+            drop_console: true,
+            collapse_vars: true,
+            reduce_vars: true,
+          },
+        },
+      }),
+    ],
+  },
 };
 
 // 判断环境变量，是否开启分析报告

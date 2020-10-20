@@ -9,7 +9,7 @@
     "build:dev": "webpack --config webpack.dev.js --open -- hot --progress",
     "build": "webpack --config webpack.prod.js --progress",
     "build:dll": "webpack --config webpack.dll.js --progress",
-    "analyze": "cross-env npm_config_report=true npm run build"
+    "analyze": "cross-env npm_config_report=true npm run build --progress"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +27,10 @@
     "autoprefixer": "^9.6.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.2",
     "cross-env": "^7.0.2",
     "css-loader": "^2.1.1",
+    "happypack": "^5.0.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.14.1",
@@ -40,6 +42,7 @@
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.5.1",
     "webpack-manifest-plugin": "^2.2.0",
-    "webpack-merge": "^4.2.1"
+    "webpack-merge": "^4.2.1",
+    "webpack-parallel-uglify-plugin": "^1.1.2"
   }
 }
