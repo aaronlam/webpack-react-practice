@@ -1,11 +1,12 @@
 const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ManifestPlugin = require("webpack-manifest-plugin");
 const webpack = require("webpack");
-const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base");
+
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const ManifestPlugin = require("webpack-manifest-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 
 const prodConfig = {
   mode: "production",
