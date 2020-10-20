@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import ReactDom from "react-dom";
-import Home from "./Home";
+import App from "./App";
 
-class Demo extends Component {
+// webpack热模块替换设置
+if (module.hot) {
+  module.hot.accept();
+}
+
+class Index extends Component {
   render() {
-    return <Home />;
+    return <App />;
   }
 }
 
-ReactDom.render(<Demo />, document.getElementById("app"));
+ReactDom.render(<Index />, document.getElementById("app"));

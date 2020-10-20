@@ -9,5 +9,5 @@
     ],
     "@babel/preset-react" // 编译react
   ],
-  "plugins": []
+  "plugins": ["react-hot-loader/babel"]
 }

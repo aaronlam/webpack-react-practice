@@ -3,6 +3,9 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base");
 
 const devConfig = {
+  entry: {
+    main: ["@babel/polyfill", "react-hot-loader/patch", "./src/index.js"],
+  },
   mode: "development",
   devtool: "cheap-module-eval-source-map",
   output: {

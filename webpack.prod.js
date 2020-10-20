@@ -11,6 +11,9 @@ const BundleAnalyzerWebpackPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
 const prodConfig = {
+  entry: {
+    main: ["@babel/polyfill", "./src/index.js"],
+  },
   mode: "production",
   devtool: "cheap-module-source-map",
   output: {

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "build:dev": "webpack --config webpack.dev.js --open -- hot --progress",
+    "build:dev": "webpack --config webpack.dev.js --open --hot --progress",
     "build": "webpack --config webpack.prod.js --progress",
     "build:dll": "webpack --config webpack.dll.js --progress",
     "analyze": "cross-env npm_config_report=true npm run build --progress"
@@ -36,6 +36,7 @@
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
+    "react-hot-loader": "^4.13.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.32.2",

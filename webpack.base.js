@@ -9,9 +9,6 @@ const os = require("os");
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = {
-  entry: {
-    main: "./src/index.js",
-  },
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
@@ -20,7 +17,17 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: ["cache-loader", "happypack/loader?id=happyBabel"],
+        use: [
+          "cache-loader",
+          "happypack/loader?id=happyBabel",
+          // 也可以使用下面这种对象形式加载happypack
+          // {
+          //   loader: 'happypack/loader',
+          //   options: {
+          //     id: "happyBabel",
+          //   },
+          // },
+        ],
         exclude: /node_modules/,
       },
     ],
