@@ -1,8 +1,10 @@
 const path = require("path");
+const webpack = require("webpack");
 
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 
 const HappyPack = require("happypack");
 const os = require("os");
@@ -11,24 +13,24 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 module.exports = {
   output: {
     path: path.resolve(__dirname, "./dist"),
-    filename: "[name].js",
+    filename: "[name].[hash:8].js",
+    chunkFilename: "[name].[hash:8].js",
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: [
-          "happypack/loader?id=happyBabel",
-          // 也可以使用下面这种对象形式加载happypack
-          // {
-          //   loader: 'happypack/loader',
-          //   options: {
-          //     id: "happyBabel",
-          //   },
-          // },
-        ],
-        include: path.resolve(__dirname, "./src"), // 只对src目录中的文件采用该loader配置
-        exclude: path.resolve(__dirname, "./node_modules"), // 排除node_modules目录下的文件采用该loader配置
+        use: ["happypack/loader?id=happyBabel"],
+        include: path.resolve(__dirname, "./src"),
+        exclude: path.resolve(__dirname, "./node_modules"),
+      },
+      {
+        test: /\.(gif|jpg|jpeg|png)$/,
+        loader: "url-loader",
+        options: {
+          name: "[name].[ext]?[hash:8]",
+          limit: 8192,
+        },
       },
     ],
   },
@@ -42,6 +44,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
+    new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, "./dll/*.dll.js"),
+    }),
+    new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, "./dll/vendors.manifest.json"),
+    }),
     new HappyPack({
       id: "happyBabel",
       loaders: ["cache-loader", "babel-loader?cacheDirectory=true"],
@@ -51,7 +59,7 @@ module.exports = {
     new CleanWebpackPlugin(), // 生成前先清除dist目录
   ],
   resolve: {
-    modules: [path.resolve(__dirname, "node_modules")], // 用于配置webpack去哪些目录下寻找第三方模块，默认是['node_modules']，但是他会先于当前目录的./node_modules去查找，发现不存在，再递归向上查找
-    extensions: [".jsx", ".js"], // 在导入没有带文件后缀时，webpack会自动带上后缀去尝试文件是否存在，而这里用于用于配置所尝试的后缀列表
+    modules: [path.resolve(__dirname, "node_modules")],
+    extensions: [".jsx", ".js"],
   },
 };
